@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using VideoAsp.Models;
 using VideoAsp.Services;
 using System;
+using VideoAsp.Entities;
 
 namespace VideoAsp.Controllers
 {
@@ -31,12 +32,12 @@ namespace VideoAsp.Controllers
                 {
                     Id = video.Id,
                     Title = video.Title,
-                    Genre = Enum.GetName(typeof(Genres), video.GenreId)
-                });
+                    Genre = video.Genre.ToString()
+                }); ;
             return View(model);
         }
 
-        public IActionResult Details(int  id)
+        public IActionResult Details(int id)
         {
             var model = _videos.Get(id);
 
@@ -46,9 +47,35 @@ namespace VideoAsp.Controllers
             {
                 Id = model.Id,
                 Title = model.Title,
-                Genre = Enum.GetName(typeof(Genres), model.GenreId)
+                Genre = model.Genre.ToString()
             });
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(VideoEditViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var video = new Video
+                {
+                    Title = model.Title,
+                    Genre = model.Genre
+                };
+                _videos.Add(video);
+                return RedirectToAction("Details", new { id = video.Id });
+            }
+
+            return View();
+        }
+        
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
