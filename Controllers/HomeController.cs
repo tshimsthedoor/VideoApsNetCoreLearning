@@ -18,10 +18,10 @@ namespace VideoAsp.Controllers
             _logger = logger;
         }
 
-        public ObjectResult Index()
+        public ViewResult Index()
         {
             var model = new Video { Id = 1, Title = "Shreck" };
-            return new ObjectResult(model);
+            return View(model);
         }
 
         public IActionResult Privacy()
