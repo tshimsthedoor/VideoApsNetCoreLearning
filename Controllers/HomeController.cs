@@ -50,7 +50,14 @@ namespace VideoAsp.Controllers
             });
         }
 
+        [HttpGet]
         public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(VideoEditViewModel model)
         {
             return View();
         }
