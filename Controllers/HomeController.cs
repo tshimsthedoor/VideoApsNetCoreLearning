@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using VideoAsp.Models;
 using VideoAsp.Services;
 using System;
+using VideoAsp.Entities;
 
 namespace VideoAsp.Controllers
 {
@@ -36,7 +37,7 @@ namespace VideoAsp.Controllers
             return View(model);
         }
 
-        public IActionResult Details(int  id)
+        public IActionResult Details(int id)
         {
             var model = _videos.Get(id);
 
@@ -59,8 +60,22 @@ namespace VideoAsp.Controllers
         [HttpPost]
         public IActionResult Create(VideoEditViewModel model)
         {
+
+            if (ModelState.IsValid)
+            {
+                var video = new Video
+                {
+                    Title = model.Title,
+                    Genre = model.Genre
+                };
+                _videos.Add(video);
+                return RedirectToAction("Details", new { id = video.Id });
+            }
+
             return View();
         }
+        
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

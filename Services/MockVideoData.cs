@@ -18,6 +18,12 @@ namespace VideoAsp.Services
             };
         }
 
+        public void Add(Video newVideo)
+        {
+            newVideo.Id = _videos.Max(v => v.Id) + 1;
+            _videos.Add(newVideo);
+        }
+
         public Video Get(int id)
         {
             return _videos.FirstOrDefault(V => V.Id.Equals(id));

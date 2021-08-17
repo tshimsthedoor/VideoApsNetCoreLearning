@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using VideoAsp.Entities;
 
 namespace VideoAsp.Services
@@ -10,5 +7,6 @@ namespace VideoAsp.Services
     {
         IEnumerable<Video> GetAll();
         Video Get(int id);
+        void Add(Video newVideo);
     }
 }
