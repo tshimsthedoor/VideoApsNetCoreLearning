@@ -1,38 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using VideoAsp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using VideoAsp.Models;
-using System.Collections.Generic;
+using VideoAsp.Services;
+using System;
 
 namespace VideoAsp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private IVideoData _videos;
+
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        public HomeController(IVideoData videos)
         {
-            _logger = logger;
+            _videos = videos;
         }
 
         public ViewResult Index()
         {
-            var model = new List<Video>
-            {
-                new Video { Id = 1, Title = "Shreck" },
-                new Video { Id = 2, Title = "Despicable Me" },
-                new Video { Id = 3, Title = "Megamind" }
-            };
+            var model = _videos.GetAll().Select(video =>
+                new VideoViewModel
+                {
+                    Id = video.Id,
+                    Title = video.Title,
+                    Genre = Enum.GetName(typeof(Genres), video.GenreId)
+                });
             return View(model);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Details(int  id)
         {
-            return View();
+            var model = _videos.Get(id);
+
+            if (model == null) return RedirectToAction("Index");
+
+            return View(new VideoViewModel
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Genre = Enum.GetName(typeof(Genres), model.GenreId)
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

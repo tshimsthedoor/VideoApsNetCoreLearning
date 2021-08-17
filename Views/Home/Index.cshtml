@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VideoAsp.Models.Video>
+﻿@model IEnumerable<VideoAsp.ViewModels.VideoViewModel>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,8 +9,10 @@
         @foreach (var Video in Model)
         {
             <tr>
-                <td>@Video.Id</td>
+                <td>@Html.ActionLink(Video.Id.ToString(), "Details", new { id = Video.Id })</td>
                 <td>@Video.Title</td>
+                <td></td>
+                <td>@Video.Genre</td>
             </tr>
         }
     </table>
