@@ -1,12 +1,18 @@
-﻿@model VideoAsp.Models.Video
+﻿@model IEnumerable<VideoAsp.Models.Video>
 
-<title>Video</title>
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-
-</div>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Video</title>
+</head>
 <body>
-    @Model.Title
+    <table>
+        @foreach (var Video in Model)
+        {
+            <tr>
+                <td>@Video.Id</td>
+                <td>@Video.Title</td>
+            </tr>
+        }
+    </table>
 </body>
+</html>
